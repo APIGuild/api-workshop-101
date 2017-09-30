@@ -5,6 +5,7 @@ import com.tw.api.contract.AuthorResponse;
 import com.tw.api.model.Author;
 import com.tw.api.service.AuthorService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ public class AuthorController {
         this.service = service;
     }
 
+    @ApiOperation(value = "POST", notes = "Create author")
     @RequestMapping(value = "/author", method = RequestMethod.POST)
     public ResponseEntity<AuthorResponse> createAuthor(@RequestBody AuthorRequest authorRequest) {
         AuthorResponse authorResponse = service.createAuthor(authorRequest);
