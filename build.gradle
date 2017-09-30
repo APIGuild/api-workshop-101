@@ -13,6 +13,9 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+apply plugin: 'jacoco'
 
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
@@ -34,3 +37,75 @@ dependencies {
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
+
+// Checkstyle
+checkstyle {
+	ignoreFailures = true
+	configFile = file("$project.rootDir/config/checkstyle.xml")
+	reportsDir = file("$project.buildDir/reports/checkstyle")
+}
+
+checkstyleMain {
+	ignoreFailures = false
+	showViolations = true
+	reports {
+		html.enabled = true
+		xml.enabled = false
+	}
+}
+
+checkstyleTest {
+	reports {
+		html.enabled = true
+		xml.enabled = false
+	}
+}
+
+// Findbugs
+findbugs {
+	ignoreFailures = true
+	reportsDir = file("$project.buildDir/reports/findbugs")
+	reportLevel = 'high'
+}
+
+findbugsMain {
+	ignoreFailures = false
+	reportLevel = "low"
+	effort = "max"
+	reports {
+		xml.enabled false
+		html.enabled true
+	}
+}
+
+findbugsTest {
+	reports {
+		xml.enabled false
+		html.enabled true
+	}
+}
+
+// Jacoco
+jacocoTestReport {
+	group = "Reporting"
+	reports {
+		xml.enabled true
+		csv.enabled false
+		html.destination "${buildDir}/reports/coverage"
+	}
+	afterEvaluate {
+		classDirectories = files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					'**/model/**',
+					'**/contract/**',
+					'**/controller/**',
+					'**/repository/**',
+					'**/service/**',
+					'**/utils/**',
+					'**/*Config*'
+			])
+		})
+	}
+}
+
+test.finalizedBy(project.tasks.jacocoTestReport)

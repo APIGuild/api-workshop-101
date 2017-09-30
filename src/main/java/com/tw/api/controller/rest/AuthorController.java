@@ -2,7 +2,6 @@ package com.tw.api.controller.rest;
 
 import com.tw.api.contract.AuthorRequest;
 import com.tw.api.contract.AuthorResponse;
-import com.tw.api.model.Author;
 import com.tw.api.service.AuthorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,9 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/api/${api.version}")
