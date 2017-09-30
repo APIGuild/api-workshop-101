@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: "Article Service"
+    description: "API 101 Demo"
+
+id:
+  length: 8
+
+server:
+  port: 8088
+
+swagger:
+  protocol: http
+
+api:
+  version: v1
