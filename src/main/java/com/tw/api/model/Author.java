@@ -1,8 +1,9 @@
 package com.tw.api.model;
 
-import lombok.*;
-
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Builder
 @Data
@@ -13,5 +14,4 @@ public class Author {
     private String id;
     private String name;
     private int age;
-    private List<Article> articles;
 }

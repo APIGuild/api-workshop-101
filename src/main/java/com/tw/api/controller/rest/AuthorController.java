@@ -58,7 +58,7 @@ public class AuthorController {
 
     @ApiOperation(value = "DELETE", notes = "Delete author")
     @RequestMapping(value = "/author/{authorId}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> updateAuthor(@PathVariable String authorId) {
+    public ResponseEntity<String> deleteAuthor(@PathVariable String authorId) {
         service.deleteAuthor(authorId);
         return ResponseEntity.status(OK).body("success");
     }
