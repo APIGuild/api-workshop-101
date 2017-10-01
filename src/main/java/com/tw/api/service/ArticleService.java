@@ -2,8 +2,6 @@ package com.tw.api.service;
 
 import com.tw.api.contract.ArticleRequest;
 import com.tw.api.contract.ArticleResponse;
-import com.tw.api.contract.AuthorRequest;
-import com.tw.api.contract.AuthorResponse;
 import com.tw.api.model.Article;
 import com.tw.api.model.Author;
 import com.tw.api.repository.ArticleRepository;

@@ -2,10 +2,7 @@ package com.tw.api.controller.rest;
 
 import com.tw.api.contract.ArticleRequest;
 import com.tw.api.contract.ArticleResponse;
-import com.tw.api.contract.AuthorRequest;
-import com.tw.api.contract.AuthorResponse;
 import com.tw.api.service.ArticleService;
-import com.tw.api.service.AuthorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
