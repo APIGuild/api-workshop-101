@@ -1,5 +1,6 @@
 package com.tw.api.integration;
 
+import com.tw.api.contract.ArticleRequest;
 import com.tw.api.contract.AuthorRequest;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
@@ -18,7 +19,7 @@ import static org.hamcrest.core.Is.is;
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-public class AuthorControllerIntegrationTest {
+public class ArticleControllerIntegrationTest {
 
     @Value(value = "${local.server.port}")
     private int port;
@@ -27,31 +28,52 @@ public class AuthorControllerIntegrationTest {
     private String apiVersion;
 
     @Test
-    public void createAuthor() throws IOException {
+    public void updateArticlePageView() throws IOException {
+        String authorId = createAuthor();
+
+        ArticleRequest articleRequest = ArticleRequest.builder()
+                .title("title")
+                .content("content")
+                .tag("tag")
+                .build();
+        String articleId = given()
+                .port(port)
+                .when()
+                .contentType(ContentType.JSON)
+                .body(articleRequest)
+                .post(String.format("/api/%s/%s/article", apiVersion, authorId))
+                .then()
+                .statusCode(HttpStatus.SC_CREATED)
+                .contentType(ContentType.JSON)
+                .and().body("title", is("title"))
+                .and().body("tag", is("tag"))
+                .and().body("content", is("content"))
+                .and().body("pageView", is(0))
+                .and().body("author.id", is(authorId))
+                .extract()
+                .path("id");
+
         given()
                 .port(port)
                 .when()
                 .contentType(ContentType.JSON)
-                .body(AuthorRequest.builder()
-                        .name("Yang")
-                        .age(30)
-                        .build())
-                .post(String.format("/api/%s/author", apiVersion))
+                .put(String.format("/api/%s/article/%s/pageview", apiVersion, articleId))
                 .then()
-                .statusCode(HttpStatus.SC_CREATED)
+                .statusCode(HttpStatus.SC_OK)
                 .contentType(ContentType.JSON)
-                .and().body("id.length()", is(8))
-                .and().body("name", is("Yang"))
-                .and().body("age", is(30));
+                .and().body("id", is(articleId))
+                .and().body("title", is("title"))
+                .and().body("tag", is("tag"))
+                .and().body("content", is("content"))
+                .and().body("pageView", is(1));
     }
 
-    @Test
-    public void updateAuthor() throws IOException {
+    private String createAuthor() {
         AuthorRequest authorRequest = AuthorRequest.builder()
                 .name("Yang")
                 .age(30)
                 .build();
-        String authorId = given()
+        return given()
                 .port(port)
                 .when()
                 .contentType(ContentType.JSON)
@@ -62,22 +84,5 @@ public class AuthorControllerIntegrationTest {
                 .contentType(ContentType.JSON)
                 .extract()
                 .path("id");
-
-        AuthorRequest updateAuthor = AuthorRequest.builder()
-                .name("Yang")
-                .age(31)
-                .build();
-        given()
-                .port(port)
-                .when()
-                .contentType(ContentType.JSON)
-                .body(updateAuthor)
-                .put(String.format("/api/%s/author/%s", apiVersion, authorId))
-                .then()
-                .statusCode(HttpStatus.SC_OK)
-                .contentType(ContentType.JSON)
-                .and().body("id", is(authorId))
-                .and().body("name", is("Yang"))
-                .and().body("age", is(31));
     }
 }
