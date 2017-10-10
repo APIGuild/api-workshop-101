@@ -87,7 +87,6 @@ findbugsTest {
 
 // Jacoco
 jacocoTestReport {
-	group = "Reporting"
 	reports {
 		xml.enabled true
 		csv.enabled false
